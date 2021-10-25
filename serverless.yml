@@ -1,0 +1,32 @@
+org: ramaya947
+app: otf-hw-api
+service: otf-hw-api
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: '20201221'
+  iam:
+    role:
+      statements: # permissions for all of your functions can be set here
+        - Effect: Allow
+          Action: # Gives permission to DynamoDB tables in a specific region
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: 'arn:aws:dynamodb:us-east-1:*:*'
+
+functions:
+  handleMemberInfo:
+    handler: handler.handleMemberInfo
+    events:
+      - http: GET members
+      - http: GET member
+      - http: POST member
+      - http: DELETE member
+      - http: PUT member
